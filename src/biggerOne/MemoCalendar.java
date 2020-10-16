@@ -50,14 +50,7 @@ public class MemoCalendar extends CalendarDataManager{ // CalendarDataManager¿« 
       JButton lMonBut;
 //      JLabel curMMYYYYLab;
       JButton nMonBut;
-//      JButton nYearBut;
-//      
-//      
-//		JButton prevBtn = new JButton("¢∏");
-//
-//		JButton nextBtn = new JButton("¢∫");
-//
-//				
+//  
 
 		JLabel yearLbl = new JLabel("≥‚");
 
