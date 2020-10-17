@@ -27,19 +27,19 @@ public class TableCreating {
             StringBuilder sb = new StringBuilder();
             String sql = sb.append("create table if not exists covid19(")     //  covid table에 attribute 추가
             		.append("id varchar(20),")
-            		.append("condate varchar(20),")
-            		.append("patnum varchar(20),")
-                    .append("ctr varchar(20),")
-                    .append("patinfo varchar(40),")
-                    .append("loc varchar(40),")
-                    .append("trip text,")
+            		.append("confirmedDate varchar(20),")
+            		.append("patientId varchar(20),")
+                    .append("country varchar(20),")
+                    .append("patientInfo varchar(40),")
+                    .append("location varchar(40),")
+                    .append("visitedPlace text,")
                     .append("contact text,")
-                    .append("manage text,")
-                    .append("statement varchar(10),")
+                    .append("action text,")
+                    .append("status varchar(10),")
                     .append("route text,")
-                    .append("regdate varchar(40),")
-                    .append("moddate varchar(40),")
-                    .append("exposure varchar(20)")
+                    .append("createdate varchar(40),")
+                    .append("modifydate varchar(40),")
+                    .append("share varchar(20)")
                     .append(")default character set utf8 collate utf8_general_ci;").toString();
  
             //query문 날리기
