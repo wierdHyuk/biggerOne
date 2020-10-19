@@ -1,5 +1,6 @@
-package Calendar;
-import Map.*;
+package Front.Calendar;
+import Front.Map.imagePanel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,12 +11,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -28,20 +24,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import javax.swing.*;
-
-class CalendarDataManager{ // 7*6¹è¿­¿¡ ³ªÅ¸³¾ ´Þ·Â °ªÀ» ±¸ÇÏ´Â class
+class CalendarDataManager{ // 7*6ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½Þ·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ class
     static final int CAL_WIDTH = 7;
     final static int CAL_HEIGHT = 6;
     int calDates[][] = new int[CAL_HEIGHT][CAL_WIDTH];
@@ -63,17 +50,17 @@ class CalendarDataManager{ // 7*6¹è¿­¿¡ ³ªÅ¸³¾ ´Þ·Â °ªÀ» ±¸ÇÏ´Â class
         makeCalData(today);
     }
     private void makeCalData(Calendar cal){
-        // 1ÀÏÀÇ À§Ä¡¿Í ¸¶Áö¸· ³¯Â¥¸¦ ±¸ÇÔ
+        // 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         int calStartingPos = (cal.get(Calendar.DAY_OF_WEEK)+7-(cal.get(Calendar.DAY_OF_MONTH))%7)%7;
         if(calMonth == 1) calLastDate = calLastDateOfMonth[calMonth] + leapCheck(calYear);
         else calLastDate = calLastDateOfMonth[calMonth];
-        // ´Þ·Â ¹è¿­ ÃÊ±âÈ­
+        // ï¿½Þ·ï¿½ ï¿½è¿­ ï¿½Ê±ï¿½È­
         for(int i = 0 ; i<CAL_HEIGHT ; i++){
             for(int j = 0 ; j<CAL_WIDTH ; j++){
                 calDates[i][j] = 0;
             }
         }
-        // ´Þ·Â ¹è¿­¿¡ °ª Ã¤¿ö³Ö±â
+        // ï¿½Þ·ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½Ö±ï¿½
         for(int i = 0, num = 1, k = 0 ; i<CAL_HEIGHT ; i++){
             if(i == 0) k = calStartingPos;
             else k = 0;
@@ -82,11 +69,11 @@ class CalendarDataManager{ // 7*6¹è¿­¿¡ ³ªÅ¸³¾ ´Þ·Â °ªÀ» ±¸ÇÏ´Â class
             }
         }
     }
-    private int leapCheck(int year){ // À±³âÀÎÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    private int leapCheck(int year){ // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
         if(year%4 == 0 && year%100 != 0 || year%400 == 0) return 1;
         else return 0;
     }
-    public void moveMonth(int mon){ // ÇöÀç´Þ·Î ºÎÅÍ n´Þ ÀüÈÄ¸¦ ¹Þ¾Æ ´Þ·Â ¹è¿­À» ¸¸µå´Â ÇÔ¼ö(1³âÀº +12, -12´Þ·Î ÀÌµ¿ °¡´É)
+    public void moveMonth(int mon){ // ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ ï¿½ï¿½ï¿½ï¿½ nï¿½ï¿½ ï¿½ï¿½ï¿½Ä¸ï¿½ ï¿½Þ¾ï¿½ ï¿½Þ·ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½(1ï¿½ï¿½ï¿½ï¿½ +12, -12ï¿½Þ·ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½)
         calMonth += mon;
         if(calMonth>11) while(calMonth>11){
             calYear++;
@@ -111,8 +98,8 @@ class CalendarDataManager{ // 7*6¹è¿­¿¡ ³ªÅ¸³¾ ´Þ·Â °ªÀ» ±¸ÇÏ´Â class
 
 
 
-public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ GUI + ½Ã°è
-    // Ã¢ ±¸¼º¿ä¼Ò¿Í ¹èÄ¡µµ
+public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerï¿½ï¿½ GUI + ï¿½Ã°ï¿½
+    // Ã¢ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
     JFrame mainFrame;
 
     ImageIcon icon = new ImageIcon ( Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
@@ -124,9 +111,9 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
     JButton nMonBut;
 
 
-    JLabel yearLbl = new JLabel("³â");
+    JLabel yearLbl = new JLabel("ï¿½ï¿½");
 
-    JLabel monthLbl = new JLabel("¿ù");
+    JLabel monthLbl = new JLabel("ï¿½ï¿½");
 
 
 
@@ -158,10 +145,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
 
 
     JPanel frameBottomPanel;
-    JLabel bottomInfo = new JLabel("¼­¿ï½Ã ÄÚ·Î³ª ÇöÈ²");
-    //»ó¼ö, ¸Þ¼¼Áö
-    final String WEEK_DAY_NAME[] = { "ÀÏ", "¿ù", "È­", "¼ö", "¸ñ", "±Ý", "Åä" };
-    final String title = "¼­¿ï½Ã ÄÚ·Î³ª ÇöÈ²";
+    JLabel bottomInfo = new JLabel("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·Î³ï¿½ ï¿½ï¿½È²");
+    //ï¿½ï¿½ï¿½, ï¿½Þ¼ï¿½ï¿½ï¿½
+    final String WEEK_DAY_NAME[] = { "ï¿½ï¿½", "ï¿½ï¿½", "È­", "ï¿½ï¿½", "ï¿½ï¿½", "ï¿½ï¿½", "ï¿½ï¿½" };
+    final String title = "ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·Î³ï¿½ ï¿½ï¿½È²";
 
     //**
     int curyear, curmonth, curdate;
@@ -169,7 +156,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
 
 
 
-    public MapCalendar(){ //±¸¼º¿ä¼Ò ¼øÀ¸·Î Á¤·ÄµÇ¾î ÀÖÀ½. °¢ ÆÇ³Ú »çÀÌ¿¡ ºóÁÙ·Î ±¸º°
+    public MapCalendar(){ //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÄµÇ¾ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ ï¿½Ç³ï¿½ ï¿½ï¿½ï¿½Ì¿ï¿½ ï¿½ï¿½ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         mainFrame = new JFrame(title);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,10 +166,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         mainFrame.setIconImage(icon.getImage());
 
         //**
-        mainFrame.setTitle("¼­¿ï½Ã ÄÚ·Î³ª ÇöÈ²");
+        mainFrame.setTitle("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·Î³ï¿½ ï¿½ï¿½È²");
         //**
         try{
-            UIManager.setLookAndFeel ("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//LookAndFeel Windows ½ºÅ¸ÀÏ Àû¿ë
+            UIManager.setLookAndFeel ("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//LookAndFeel Windows ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             SwingUtilities.updateComponentTreeUI(mainFrame) ;
         }catch(Exception e){
             bottomInfo.setText("ERROR : LookAndFeel setting failed");
@@ -199,10 +186,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         todayLab = new JLabel(today.get(Calendar.MONTH)+1+"/"+today.get(Calendar.DAY_OF_MONTH)+"/"+today.get(Calendar.YEAR));
 
         //**
-        lMonBut = new JButton("¢¸");
+        lMonBut = new JButton("ï¿½ï¿½");
         lMonBut.setToolTipText("Previous Month");
         lMonBut.addActionListener(lForCalOpButtons);
-        nMonBut = new JButton("¢º");
+        nMonBut = new JButton("ï¿½ï¿½");
         //**
         nMonBut.setToolTipText("Next Month");
         nMonBut.addActionListener(lForCalOpButtons);
@@ -215,7 +202,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
 
         yearCombo.setModel(yearModel);
 
-        yearCombo.setSelectedItem(curyear);	//ÇöÀç ³âµµ ¼±ÅÃ
+        yearCombo.setSelectedItem(curyear);	//ï¿½ï¿½ï¿½ï¿½ ï¿½âµµ ï¿½ï¿½ï¿½ï¿½
         yearCombo.addActionListener(lForCalCombos);
 
 
@@ -227,7 +214,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         }
         monthCombo.setModel(monthModel);
 
-        monthCombo.setSelectedItem(curmonth+1);	//ÇöÀç ¿ù ¼±ÅÃ
+        monthCombo.setSelectedItem(curmonth+1);	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         monthCombo.addActionListener(lForCalCombos);
 
         //** 
@@ -293,11 +280,11 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
             weekDaysName[i].setBorderPainted(false);//??
             weekDaysName[i].setContentAreaFilled(false);
             weekDaysName[i].setForeground(Color.WHITE);
-            //¿äÀÏº° »ö±ò
+            //ï¿½ï¿½ï¿½Ïºï¿½ ï¿½ï¿½ï¿½ï¿½
             if(i == 0) weekDaysName[i].setBackground(new Color(127, 96, 0));
             else if (i == 6) weekDaysName[i].setBackground(new Color(127, 96, 0));
             else weekDaysName[i].setBackground(new Color(234, 178, 0));
-            weekDaysName[i].setOpaque(true);//JLabelÀÇ ¹è°æ»öÀº ±âº»ÀÌ Åõ¸í! setOpaque(true)·Î ÇØ¾ß ¹è°æ»ö Àû¿ë °¡´É!
+            weekDaysName[i].setOpaque(true);//JLabelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½! setOpaque(true)ï¿½ï¿½ ï¿½Ø¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!
             weekDaysName[i].setFocusPainted(false);
             calPanel.add(weekDaysName[i]);
         }
@@ -312,9 +299,9 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
                 calPanel.add(dateButs[i][j]);
             }
         }
-        calPanel.setLayout(new GridLayout(0,7,2,2));//ÇàÀº 0À¸·Î °¡º¯Àû, ¿­ÀÇ °³¼ö´Â 3, °ÝÀÚ»çÀÌ °£°ÝÀº 2, 2
+        calPanel.setLayout(new GridLayout(0,7,2,2));//ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3, ï¿½ï¿½ï¿½Ú»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2, 2
         calPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        showCal(); // ´Þ·ÂÀ» Ç¥½Ã
+        showCal(); // ï¿½Þ·ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
 
         infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
@@ -335,7 +322,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         mapPanel.add(selectedDate, BorderLayout.NORTH);
         mapPanel.add(mapArea,BorderLayout.CENTER);
 
-        //calOpPanel, calPanelÀ»  frameSubPanelWest¿¡ ¹èÄ¡
+        //calOpPanel, calPanelï¿½ï¿½  frameSubPanelWestï¿½ï¿½ ï¿½ï¿½Ä¡
         JPanel frameSubPanelWest = new JPanel();
         Dimension calOpPanelSize = calOpPanel.getPreferredSize();
         calOpPanelSize.height = 110;
@@ -344,7 +331,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         frameSubPanelWest.add(calOpPanel,BorderLayout.NORTH);
         frameSubPanelWest.add(calPanel,BorderLayout.CENTER);
 
-        //infoPanel, mapPanelÀ»  frameSubPanelEast¿¡ ¹èÄ¡
+        //infoPanel, mapPanelï¿½ï¿½  frameSubPanelEastï¿½ï¿½ ï¿½ï¿½Ä¡
         JPanel frameSubPanelEast = new JPanel();
         Dimension infoPanelSize=infoPanel.getPreferredSize();
         infoPanelSize.height = 65;
@@ -357,23 +344,23 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
         frameSubPanelWestSize.width = 550;
         frameSubPanelWest.setPreferredSize(frameSubPanelWestSize);
 
-        //µÚ´Ê°Ô Ãß°¡µÈ bottom Panel..
+        //ï¿½Ú´Ê°ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ bottom Panel..
         frameBottomPanel = new JPanel();
         frameBottomPanel.add(bottomInfo);
 
 
 
 
-        //frame¿¡ ÀüºÎ ¹èÄ¡
+        //frameï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(frameSubPanelWest, BorderLayout.WEST);
         mainFrame.add(frameSubPanelEast, BorderLayout.CENTER);
         mainFrame.add(frameBottomPanel, BorderLayout.SOUTH);
         mainFrame.setVisible(true);
 
-        focusToday(); //ÇöÀç ³¯Â¥¿¡ focus¸¦ ÁÜ (mainFrame.setVisible(true) ÀÌÈÄ¿¡ ¹èÄ¡ÇØ¾ßÇÔ)
+        focusToday(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ focusï¿½ï¿½ ï¿½ï¿½ (mainFrame.setVisible(true) ï¿½ï¿½ï¿½Ä¿ï¿½ ï¿½ï¿½Ä¡ï¿½Ø¾ï¿½ï¿½ï¿½)
 
-        //Thread ÀÛµ¿(½Ã°è, bottomMsg ÀÏÁ¤½Ã°£ÈÄ »èÁ¦)
+        //Thread ï¿½Ûµï¿½(ï¿½Ã°ï¿½, bottomMsg ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         ThreadConrol threadCnl = new ThreadConrol();
         threadCnl.start();
     }
@@ -472,7 +459,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManagerÀÇ G
                 }
             }
 
-            if(!(k ==0 && l == 0)) calDayOfMon = calDates[k][l]; //today¹öÆ°À» ´­·¶À»¶§µµ ÀÌ actionPerformedÇÔ¼ö°¡ ½ÇÇàµÇ±â ¶§¹®¿¡ ³ÖÀº ºÎºÐ
+            if(!(k ==0 && l == 0)) calDayOfMon = calDates[k][l]; //todayï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ actionPerformedï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
 
             cal = new GregorianCalendar(calYear,calMonth,calDayOfMon);
 
