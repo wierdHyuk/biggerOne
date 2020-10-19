@@ -1,6 +1,7 @@
 package Util.DataHandler;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,7 +18,8 @@ public class readCSV {
         BufferedReader br = null;
 
         try{
-            br = Files.newBufferedReader(Paths.get("data\\covid19!.csv"));
+            File file = new File("data","covid19!.csv");
+            br = Files.newBufferedReader(Paths.get(file.getAbsolutePath()));
             Charset.forName("UTF-8");
             String line = "";
 
