@@ -1,6 +1,6 @@
 package Main;
 
-import Calendar.MapCalendar;
+import Front.Calendar.MapCalendar;
 
 import javax.swing.*;
 

@@ -1,4 +1,4 @@
-package Map;
+package Front.Map;
 
 import javax.swing.*;
 import java.awt.*;
