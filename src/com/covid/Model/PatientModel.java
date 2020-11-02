@@ -11,8 +11,6 @@ public class PatientModel {
 
     String patientState;
 
-
-
     public String getId() {
         return id;
     }
@@ -42,6 +40,23 @@ public class PatientModel {
     }
 
     public static PatientModel PatientModelBuilder(String id, String confirmedDate, String patientId, String region, String patientState){
+
+        // 지역 값 valid
+        if(region == null || region.equals("")){
+            region = "기타";
+        }
+
+        // patientId 값 valid
+        if(patientId == null || patientId.equals("")){
+            patientId = "-1";
+        }
+
+
+        // patient 값 valid
+        if(patientState== null || patientState.equals("")){
+            patientState = "퇴원";
+        }
+
 
         return new PatientModel(id,confirmedDate,patientId,region,patientState);
     }

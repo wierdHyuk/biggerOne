@@ -46,7 +46,7 @@ public class ReadCSV {
                 String region = array[5];
                 String patientState = array[9];
 
-                // patienModel 생성
+                // patientModel 생성
                 PatientModel patientModel = PatientModel.PatientModelBuilder(id, confirmedDate, patientId, region, patientState);
 
                 // list 에 저장
