@@ -9,7 +9,7 @@ public class PatientModel {
 
     String region;
 
-    String patientState;
+    PatientState patientState;
 
     public String getId() {
         return id;
@@ -27,11 +27,11 @@ public class PatientModel {
         return region;
     }
 
-    public String getPatientState() {
+    public PatientState getPatientState() {
         return patientState;
     }
 
-    public PatientModel(String id, String confirmedDate, String patientId, String region, String patientState) {
+    public PatientModel(String id, String confirmedDate, String patientId, String region, PatientState patientState) {
         this.id= id;
         this.confirmedDate = confirmedDate;
         this.patientId = patientId;
@@ -51,14 +51,18 @@ public class PatientModel {
             patientId = "-1";
         }
 
+        PatientState state = PatientState.ENTRANCE;
 
-        // patient 값 valid
-        if(patientState== null || patientState.equals("")){
-            patientState = "퇴원";
+        if(patientState != null && !patientState.equals("")){
+            if(patientState.equals("퇴원")){
+                state = PatientState.EXIT;
+            }else if(patientState.equals("사망")){
+                state = PatientState.DEAD;
+            }
         }
 
 
-        return new PatientModel(id,confirmedDate,patientId,region,patientState);
+        return new PatientModel(id,confirmedDate,patientId,region,state);
     }
 
 }
