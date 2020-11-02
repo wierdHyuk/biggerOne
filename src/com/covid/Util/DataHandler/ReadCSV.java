@@ -38,6 +38,9 @@ public class ReadCSV {
 
                 String id = array[0];
                 String confirmedDate = array[1];
+
+                confirmedDate = confirmedDate.substring(0,confirmedDate.length()-1); // 마지막 문자열 지우기 (.)
+
                 String patientId = array[2];
                 String region = array[5];
                 String patientState = array[9];
