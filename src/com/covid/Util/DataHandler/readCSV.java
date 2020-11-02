@@ -1,6 +1,6 @@
-package Util.DataHandler;
+package com.covid.Util.DataHandler;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import com.covid.Model.PatientModel;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class readCSV {

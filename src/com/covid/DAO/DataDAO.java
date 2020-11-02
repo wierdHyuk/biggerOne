@@ -1,4 +1,4 @@
-package DAO;
+package com.covid.DAO;
 
 import java.sql.*;
 

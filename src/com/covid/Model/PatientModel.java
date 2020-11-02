@@ -1,4 +1,4 @@
-package Util.DataHandler;
+package com.covid.Model;
 
 public class PatientModel {
     String id;

@@ -1,5 +1,5 @@
-package Front.Calendar;
-import Front.Map.imagePanel;
+package com.covid.Front.Calendar;
+import com.covid.Front.Map.imagePanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

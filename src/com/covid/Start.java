@@ -1,6 +1,6 @@
-package Main;
+package com.covid;
 
-import Front.Calendar.MapCalendar;
+import com.covid.Front.Calendar.MapCalendar;
 
 import javax.swing.*;
 
