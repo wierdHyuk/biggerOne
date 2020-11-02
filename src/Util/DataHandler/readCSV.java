@@ -1,5 +1,7 @@
 package Util.DataHandler;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +16,7 @@ import java.util.List;
 public class readCSV {
     public static void main(String[] args){
         //반환용 리스트
-        List<List<String>> ret = new ArrayList<List<String>>();
+        List<PatientModel> patientModels = new ArrayList<>();
         BufferedReader br = null;
 
         try{
@@ -23,14 +25,34 @@ public class readCSV {
             Charset.forName("UTF-8");
             String line = "";
 
+            int count =0 ;
+
             while((line = br.readLine()) != null){
+                if(count == 0){
+                    count++;
+                    continue;
+                }
                 //CSV 1행을 저장하는 리스트
                 List<String> tmpList = new ArrayList<String>();
                 String array[] = line.split(",");
                 //배열에서 리스트 반환
-                tmpList = Arrays.asList(array);
-                System.out.println(tmpList);
-                ret.add(tmpList);
+
+                String id = array[0];
+                String confirmedDate = array[1];
+                String patientId = array[2];
+                String region = array[5];
+                String patientState = array[9];
+
+
+
+                PatientModel patientModel = PatientModel.PatientModelBuilder(id,confirmedDate,patientId,region,patientState);
+
+                patientModels.add(patientModel);
+            }
+
+            for (PatientModel patient:patientModels) {
+                System.out.println(patient.getId() + "  " + patient.getConfirmedDate() + " " + patient.getPatientId() + " " + patient.getRegion() + " "+patient.getPatientState());
+
             }
         }catch(FileNotFoundException e){
             e.printStackTrace();
