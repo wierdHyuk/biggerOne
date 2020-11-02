@@ -28,7 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-class CalendarDataManager{ // 7*6�迭�� ��Ÿ�� �޷� ���� ���ϴ� class
+class CalendarDataManager{ // 7*6배열에 나타낼 달력 값을 구하는 class
     static final int CAL_WIDTH = 7;
     final static int CAL_HEIGHT = 6;
     int calDates[][] = new int[CAL_HEIGHT][CAL_WIDTH];
@@ -50,17 +50,17 @@ class CalendarDataManager{ // 7*6�迭�� ��Ÿ�� �޷� ����
         makeCalData(today);
     }
     private void makeCalData(Calendar cal){
-        // 1���� ��ġ�� ������ ��¥�� ����
+        // 1일의 위치와 마지막 날짜를 구함
         int calStartingPos = (cal.get(Calendar.DAY_OF_WEEK)+7-(cal.get(Calendar.DAY_OF_MONTH))%7)%7;
         if(calMonth == 1) calLastDate = calLastDateOfMonth[calMonth] + leapCheck(calYear);
         else calLastDate = calLastDateOfMonth[calMonth];
-        // �޷� �迭 �ʱ�ȭ
+        // 달력 배열 초기화
         for(int i = 0 ; i<CAL_HEIGHT ; i++){
             for(int j = 0 ; j<CAL_WIDTH ; j++){
                 calDates[i][j] = 0;
             }
         }
-        // �޷� �迭�� �� ä���ֱ�
+        // 달력 배열에 값 채워넣기
         for(int i = 0, num = 1, k = 0 ; i<CAL_HEIGHT ; i++){
             if(i == 0) k = calStartingPos;
             else k = 0;
@@ -69,11 +69,11 @@ class CalendarDataManager{ // 7*6�迭�� ��Ÿ�� �޷� ����
             }
         }
     }
-    private int leapCheck(int year){ // �������� Ȯ���ϴ� �Լ�
+    private int leapCheck(int year){ // 윤년인지 확인하는 함수
         if(year%4 == 0 && year%100 != 0 || year%400 == 0) return 1;
         else return 0;
     }
-    public void moveMonth(int mon){ // ����޷� ���� n�� ���ĸ� �޾� �޷� �迭�� ����� �Լ�(1���� +12, -12�޷� �̵� ����)
+    public void moveMonth(int mon){ // 현재달로 부터 n달 전후를 받아 달력 배열을 만드는 함수(1년은 +12, -12달로 이동 가능)
         calMonth += mon;
         if(calMonth>11) while(calMonth>11){
             calYear++;
@@ -98,8 +98,8 @@ class CalendarDataManager{ // 7*6�迭�� ��Ÿ�� �޷� ����
 
 
 
-public class MapCalendar extends CalendarDataManager{ // CalendarDataManager�� GUI + �ð�
-    // â ������ҿ� ��ġ��
+public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 GUI + 시계
+    // 창 구성요소와 배치도
     JFrame mainFrame;
 
     ImageIcon icon = new ImageIcon ( Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
@@ -111,9 +111,9 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
     JButton nMonBut;
 
 
-    JLabel yearLbl = new JLabel("��");
+    JLabel yearLbl = new JLabel("년");
 
-    JLabel monthLbl = new JLabel("��");
+    JLabel monthLbl = new JLabel("월");
 
 
 
@@ -145,10 +145,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
 
 
     JPanel frameBottomPanel;
-    JLabel bottomInfo = new JLabel("����� �ڷγ� ��Ȳ");
-    //���, �޼���
-    final String WEEK_DAY_NAME[] = { "��", "��", "ȭ", "��", "��", "��", "��" };
-    final String title = "����� �ڷγ� ��Ȳ";
+    JLabel bottomInfo = new JLabel("서울시 코로나 현황");
+    //상수, 메세지
+    final String WEEK_DAY_NAME[] = { "일", "월", "화", "수", "목", "금", "토" };
+    final String title = "서울시 코로나 현황";
 
     //**
     int curyear, curmonth, curdate;
@@ -156,7 +156,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
 
 
 
-    public MapCalendar(){ //������� ������ ���ĵǾ� ����. �� �ǳ� ���̿� ���ٷ� ����
+    public MapCalendar(){ //구성요소 순으로 정렬되어 있음. 각 판넬 사이에 빈줄로 구별
 
         mainFrame = new JFrame(title);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -166,10 +166,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         mainFrame.setIconImage(icon.getImage());
 
         //**
-        mainFrame.setTitle("����� �ڷγ� ��Ȳ");
+        mainFrame.setTitle("서울시 코로나 현황");
         //**
         try{
-            UIManager.setLookAndFeel ("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//LookAndFeel Windows ��Ÿ�� ����
+            UIManager.setLookAndFeel ("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//LookAndFeel Windows 스타일 적용
             SwingUtilities.updateComponentTreeUI(mainFrame) ;
         }catch(Exception e){
             bottomInfo.setText("ERROR : LookAndFeel setting failed");
@@ -186,10 +186,10 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         todayLab = new JLabel(today.get(Calendar.MONTH)+1+"/"+today.get(Calendar.DAY_OF_MONTH)+"/"+today.get(Calendar.YEAR));
 
         //**
-        lMonBut = new JButton("��");
+        lMonBut = new JButton("◀");
         lMonBut.setToolTipText("Previous Month");
         lMonBut.addActionListener(lForCalOpButtons);
-        nMonBut = new JButton("��");
+        nMonBut = new JButton("▶");
         //**
         nMonBut.setToolTipText("Next Month");
         nMonBut.addActionListener(lForCalOpButtons);
@@ -202,7 +202,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
 
         yearCombo.setModel(yearModel);
 
-        yearCombo.setSelectedItem(curyear);	//���� �⵵ ����
+        yearCombo.setSelectedItem(curyear);	//현재 년도 선택
         yearCombo.addActionListener(lForCalCombos);
 
 
@@ -214,7 +214,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         }
         monthCombo.setModel(monthModel);
 
-        monthCombo.setSelectedItem(curmonth+1);	//���� �� ����
+        monthCombo.setSelectedItem(curmonth+1);	//현재 월 선택
         monthCombo.addActionListener(lForCalCombos);
 
         //** 
@@ -280,11 +280,11 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
             weekDaysName[i].setBorderPainted(false);//??
             weekDaysName[i].setContentAreaFilled(false);
             weekDaysName[i].setForeground(Color.WHITE);
-            //���Ϻ� ����
+            //요일별 색깔
             if(i == 0) weekDaysName[i].setBackground(new Color(127, 96, 0));
             else if (i == 6) weekDaysName[i].setBackground(new Color(127, 96, 0));
             else weekDaysName[i].setBackground(new Color(234, 178, 0));
-            weekDaysName[i].setOpaque(true);//JLabel�� ������ �⺻�� ����! setOpaque(true)�� �ؾ� ���� ���� ����!
+            weekDaysName[i].setOpaque(true);//JLabel의 배경색은 기본이 투명! setOpaque(true)로 해야 배경색 적용 가능!
             weekDaysName[i].setFocusPainted(false);
             calPanel.add(weekDaysName[i]);
         }
@@ -299,9 +299,9 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
                 calPanel.add(dateButs[i][j]);
             }
         }
-        calPanel.setLayout(new GridLayout(0,7,2,2));//���� 0���� ������, ���� ������ 3, ���ڻ��� ������ 2, 2
+        calPanel.setLayout(new GridLayout(0,7,2,2));//행은 0으로 가변적, 열의 개수는 3, 격자사이 간격은 2, 2
         calPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        showCal(); // �޷��� ǥ��
+        showCal(); // 달력을 표시
 
         infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
@@ -322,7 +322,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         mapPanel.add(selectedDate, BorderLayout.NORTH);
         mapPanel.add(mapArea,BorderLayout.CENTER);
 
-        //calOpPanel, calPanel��  frameSubPanelWest�� ��ġ
+        //calOpPanel, calPanel을  frameSubPanelWest에 배치
         JPanel frameSubPanelWest = new JPanel();
         Dimension calOpPanelSize = calOpPanel.getPreferredSize();
         calOpPanelSize.height = 110;
@@ -331,7 +331,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         frameSubPanelWest.add(calOpPanel,BorderLayout.NORTH);
         frameSubPanelWest.add(calPanel,BorderLayout.CENTER);
 
-        //infoPanel, mapPanel��  frameSubPanelEast�� ��ġ
+        //infoPanel, mapPanel을  frameSubPanelEast에 배치
         JPanel frameSubPanelEast = new JPanel();
         Dimension infoPanelSize=infoPanel.getPreferredSize();
         infoPanelSize.height = 65;
@@ -344,23 +344,23 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
         frameSubPanelWestSize.width = 550;
         frameSubPanelWest.setPreferredSize(frameSubPanelWestSize);
 
-        //�ڴʰ� �߰��� bottom Panel..
+        //뒤늦게 추가된 bottom Panel..
         frameBottomPanel = new JPanel();
         frameBottomPanel.add(bottomInfo);
 
 
 
 
-        //frame�� ���� ��ġ
+        //frame에 전부 배치
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(frameSubPanelWest, BorderLayout.WEST);
         mainFrame.add(frameSubPanelEast, BorderLayout.CENTER);
         mainFrame.add(frameBottomPanel, BorderLayout.SOUTH);
         mainFrame.setVisible(true);
 
-        focusToday(); //���� ��¥�� focus�� �� (mainFrame.setVisible(true) ���Ŀ� ��ġ�ؾ���)
+        focusToday(); //현재 날짜에 focus를 줌 (mainFrame.setVisible(true) 이후에 배치해야함)
 
-        //Thread �۵�(�ð�, bottomMsg �����ð��� ����)
+        //Thread 작동(시계, bottomMsg 일정시간후 삭제)
         ThreadConrol threadCnl = new ThreadConrol();
         threadCnl.start();
     }
@@ -459,7 +459,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager��
                 }
             }
 
-            if(!(k ==0 && l == 0)) calDayOfMon = calDates[k][l]; //today��ư�� ���������� �� actionPerformed�Լ��� ����Ǳ� ������ ���� �κ�
+            if(!(k ==0 && l == 0)) calDayOfMon = calDates[k][l]; //today버튼을 눌렀을때도 이 actionPerformed함수가 실행되기 때문에 넣은 부분
 
             cal = new GregorianCalendar(calYear,calMonth,calDayOfMon);
 
