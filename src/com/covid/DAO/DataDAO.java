@@ -1,6 +1,9 @@
 package com.covid.DAO;
 
+import com.covid.Model.PatientModel;
+
 import java.sql.*;
+import java.util.List;
 
 public class DataDAO {
     public static void createDb() {
@@ -59,9 +62,8 @@ public class DataDAO {
 
             stmt = conn.createStatement();
 
-            //query �����
             StringBuilder sb = new StringBuilder();
-            String sql = sb.append("create table if not exists patient(")    
+            String sql = sb.append("create table if not exists patient(")
                     .append("id varchar(20) PRIMARY KEY,")
                     .append("confirmedDate varchar(20),")
                     .append("patientId varchar(20),")
@@ -92,7 +94,7 @@ public class DataDAO {
 
 
 
-    public static void csvToDB(){
+    public static void modelToDB(List<PatientModel> patientModelList){
         Connection conn = null;
         Statement stmt = null;
 
@@ -111,9 +113,25 @@ public class DataDAO {
 
 
 
-            StringBuilder sp = new StringBuilder();
-            String sql2 = sp.append("LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 5.6/Uploads/covid.csv' INTO TABLE covid19 FIELDS TERMINATED BY ',';").toString();
-            stmt.execute(sql2);
+            for (PatientModel patient:patientModelList) {
+                if(patient.getRegion().equals("기타")){
+                    continue;
+                }
+                StringBuilder sb = new StringBuilder();
+                String sql = sb.append("insert into patient (id, confirmedDate, patientId, region, patientState) values('")
+                        .append(patient.getId())
+                        .append("','")
+                        .append(patient.getConfirmedDate())
+                        .append("','")
+                        .append(patient.getPatientId())
+                        .append("','")
+                        .append(patient.getRegion())
+                        .append("','")
+                        .append(patient.getPatientState())
+                        .append("')")
+                        .toString();
+                stmt.execute(sql);
+            }
 
         }
 
