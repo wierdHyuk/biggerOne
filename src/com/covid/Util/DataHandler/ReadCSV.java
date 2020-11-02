@@ -31,15 +31,16 @@ public class ReadCSV {
                     count++;
                     continue;
                 }
-                //CSV 1행을 저장하는 리스트
-                List<String> tmpList = new ArrayList<String>();
                 String[] array = line.split(",");
                 //배열에서 리스트 반환
 
                 String id = array[0];
                 String confirmedDate = array[1];
 
-                confirmedDate = confirmedDate.substring(0,confirmedDate.length()-1); // 마지막 문자열 지우기 (.)
+                // null 처리
+                if(confirmedDate!=null && !confirmedDate.equals("")) {
+                    confirmedDate = confirmedDate.substring(0, confirmedDate.length() - 1); // 마지막 문자열 지우기 (.)
+                }
 
                 String patientId = array[2];
                 String region = array[5];
