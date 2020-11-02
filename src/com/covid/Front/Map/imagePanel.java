@@ -1,4 +1,4 @@
-package Front.Map;
+package com.covid.Front.Map;
 
 import javax.swing.*;
 import java.awt.*;
