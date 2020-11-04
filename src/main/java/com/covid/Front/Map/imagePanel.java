@@ -9,7 +9,7 @@ public class imagePanel extends JPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        ImageIcon map = new ImageIcon( Toolkit.getDefaultToolkit().getImage(getClass().getResource("map.png")));
+        ImageIcon map = new ImageIcon( Toolkit.getDefaultToolkit().getImage(getClass().getResource("/map.png")));
         image = map.getImage();
 
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
