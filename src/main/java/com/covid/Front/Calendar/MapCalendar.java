@@ -102,7 +102,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
     // 창 구성요소와 배치도
     JFrame mainFrame;
 
-    ImageIcon icon = new ImageIcon ( Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+    ImageIcon icon = new ImageIcon ( Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon.png")));
     JPanel calOpPanel;
     JButton todayBut;
     JLabel todayLab;
