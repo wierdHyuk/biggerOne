@@ -9,7 +9,7 @@ public class DataDAO {
     public static void createDb() {
         String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
         String username = "root";
-        String password = "";
+        String password = "qjelqjel01!";
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -51,7 +51,7 @@ public class DataDAO {
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
         String id = "root";
-        String pw = "";
+        String pw = "qjelqjel01!";
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -92,7 +92,63 @@ public class DataDAO {
         }
     }
 
+    public static void getCountRegion(){
+        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+        String username = "root";
+        String password = "qjelqjel01!";
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(url,username,password);
+
+            stmt = conn.createStatement();
+
+
+            String cnt_dobong = "select count(*) from patient where region = '도봉구'";
+            String cnt_kangbuk = "select count(*) from patient where region = '강북구'";
+            String cnt_nowon = "select count(*) from patient where region = '노원구'";
+            String cnt_jungryang = "select count(*) from patient where region = '중량구'";
+            String cnt_dongdaemoon = "select count(*) from patient where region = '동대문구'";
+            String cnt_sungbook = "select count(*) from patient where region = '성북구'";
+            String cnt_kwangjin = "select count(*) from patient where region = '광진구'";
+            String cnt_sungdong = "select count(*) from patient where region = '성동구'";
+            String cnt_joong = "select count(*) from patient where region = '중구'";
+            String cnt_jongro = "select count(*) from patient where region = '종로구'";
+            String cnt_eunpyeong = "select count(*) from patient where region = '은평구'";
+            String cnt_seodaemoon = "select count(*) from patient where region = '서대문구'";
+            String cnt_mapo = "select count(*) from patient where region = '마포구'";
+            String cnt_kwangseo = "select count(*) from patient where region = '광서구'";
+            String cnt_yangcheon = "select count(*) from patient where region = '양천구'";
+            String cnt_kuro = "select count(*) from patient where region = '구로구'";
+            String cnt_yeongdeungpo = "select count(*) from patient where region = '영등포구'";
+            String cnt_kuemcheon = "select count(*) from patient where region = '금천구'";
+            String cnt_dongjak = "select count(*) from patient where region = '동작구'";
+            String cnt_kwanak = "select count(*) from patient where region = '관악구'";
+            String cnt_seocho = "select count(*) from patient where region = '서초구'";
+            String cnt_kangnam = "select count(*) from patient where region = '강남구'";
+            String cnt_songpa = "select count(*) from patient where region = '송파구'";
+            String cnt_kangdong = "select count(*) from patient where region = '강동구'";
+
+            rs = stmt.executeQuery(cnt_dobong);
+            while(rs.next())
+            {
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            if(conn!=null) try { conn.close(); } catch(SQLException se) {}
+            if(stmt!=null) try { stmt.close(); } catch(SQLException se) {}
+            if(rs!=null) try { rs.close(); } catch(SQLException se) {}
+        }
+    }
 
     public static void modelToDB(List<PatientModel> patientModelList){
         Connection conn = null;
@@ -100,7 +156,7 @@ public class DataDAO {
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
         String id = "root";
-        String pw = "";
+        String pw = "qjelqjel01!";
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -110,7 +166,6 @@ public class DataDAO {
             System.out.println("Successfully run!");
 
             stmt = conn.createStatement();
-
 
 
             for (PatientModel patient:patientModelList) {
@@ -143,12 +198,13 @@ public class DataDAO {
         }
         finally{
             try{
-                //�ڿ� ����
                 if(conn != null && !conn.isClosed())
                     conn.close();
             } catch(SQLException e){
                 e.printStackTrace();
             }
         }
+
     }
+
 }
