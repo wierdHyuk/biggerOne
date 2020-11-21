@@ -151,4 +151,47 @@ public class DataDAO {
             }
         }
     }
+    public static void DayCount(){
+		Connection conn = null;
+
+
+        String url = "jdbc:mysql://127.0.0.1/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+        String id = "root";
+        String pw = "pass";
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(url, id, pw);
+
+            System.out.println("Extract patient num!\n");
+
+
+
+    		String sql = "SELECT confirmedDate, count(*) AS cnt FROM `covid19`.`patient` GROUP BY confirmedDate ORDER BY confirmedDate;";
+
+    		PreparedStatement pstmt4 = (PreparedStatement)conn.prepareStatement(sql);
+    		ResultSet rs = pstmt4.executeQuery();
+
+    		while(rs.next())	System.out.println("Date : " + rs.getString(1) + "\t" + "Count : " + rs.getString(2));
+
+
+
+        }catch(ClassNotFoundException e){
+        	e.printStackTrace();
+        }
+        catch(SQLException e){
+        	e.printStackTrace();
+        }
+        finally{
+        	try{
+        		if(conn != null && !conn.isClosed())
+        			conn.close();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+}
 }
