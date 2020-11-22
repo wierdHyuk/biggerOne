@@ -92,12 +92,12 @@ public class DataDAO {
         }
     }
 
-    public static void getCountRegion(){
+    public static void getCountRegion(String region){
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "";
+        String username = "root";
         String password = "";
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try {
@@ -105,35 +105,13 @@ public class DataDAO {
 
             conn = DriverManager.getConnection(url,username,password);
 
-            stmt = conn.createStatement();
+            String regionCountQuery = "select count(*) from patient where region = ?";
 
+            pstmt = conn.prepareStatement(regionCountQuery);
 
-            String cnt_dobong = "select count(*) from patient where region = '도봉구'";
-            String cnt_kangbuk = "select count(*) from patient where region = '강북구'";
-            String cnt_nowon = "select count(*) from patient where region = '노원구'";
-            String cnt_jungryang = "select count(*) from patient where region = '중량구'";
-            String cnt_dongdaemoon = "select count(*) from patient where region = '동대문구'";
-            String cnt_sungbook = "select count(*) from patient where region = '성북구'";
-            String cnt_kwangjin = "select count(*) from patient where region = '광진구'";
-            String cnt_sungdong = "select count(*) from patient where region = '성동구'";
-            String cnt_joong = "select count(*) from patient where region = '중구'";
-            String cnt_jongro = "select count(*) from patient where region = '종로구'";
-            String cnt_eunpyeong = "select count(*) from patient where region = '은평구'";
-            String cnt_seodaemoon = "select count(*) from patient where region = '서대문구'";
-            String cnt_mapo = "select count(*) from patient where region = '마포구'";
-            String cnt_kwangseo = "select count(*) from patient where region = '광서구'";
-            String cnt_yangcheon = "select count(*) from patient where region = '양천구'";
-            String cnt_kuro = "select count(*) from patient where region = '구로구'";
-            String cnt_yeongdeungpo = "select count(*) from patient where region = '영등포구'";
-            String cnt_kuemcheon = "select count(*) from patient where region = '금천구'";
-            String cnt_dongjak = "select count(*) from patient where region = '동작구'";
-            String cnt_kwanak = "select count(*) from patient where region = '관악구'";
-            String cnt_seocho = "select count(*) from patient where region = '서초구'";
-            String cnt_kangnam = "select count(*) from patient where region = '강남구'";
-            String cnt_songpa = "select count(*) from patient where region = '송파구'";
-            String cnt_kangdong = "select count(*) from patient where region = '강동구'";
+            pstmt.setString(1,region);
 
-            rs = stmt.executeQuery(cnt_dobong);
+            rs = pstmt.executeQuery();
             while(rs.next())
             {
                 System.out.println(rs.getString(1));
@@ -145,7 +123,7 @@ public class DataDAO {
             se.printStackTrace();
         } finally {
             if(conn!=null) try { conn.close(); } catch(SQLException se) {}
-            if(stmt!=null) try { stmt.close(); } catch(SQLException se) {}
+            if(pstmt!=null) try { pstmt.close(); } catch(SQLException se) {}
             if(rs!=null) try { rs.close(); } catch(SQLException se) {}
         }
     }
