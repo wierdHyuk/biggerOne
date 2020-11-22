@@ -19,7 +19,6 @@ public class Start {
         DataDAO.createDb();
         DataDAO.createTable();
         DataDAO.modelToDB(patientModelList);
-        DataDAO.getCountRegion();
 
 
 
