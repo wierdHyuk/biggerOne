@@ -8,7 +8,7 @@ import java.util.List;
 public class DataDAO {
     public static void createDb() {
         String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "root";
+        String username = "";
         String password = "";
         Connection conn = null;
         Statement stmt = null;
@@ -50,7 +50,7 @@ public class DataDAO {
         Statement stmt = null;
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "root";
+        String id = "";
         String pw = "";
 
         try{
@@ -92,14 +92,48 @@ public class DataDAO {
         }
     }
 
+    public static void getCountRegion(String region){
+        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+        String username = "root";
+        String password = "";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(url,username,password);
+
+            String regionCountQuery = "select count(*) from patient where region = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,region);
+
+            rs = pstmt.executeQuery();
+            while(rs.next())
+            {
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            if(conn!=null) try { conn.close(); } catch(SQLException se) {}
+            if(pstmt!=null) try { pstmt.close(); } catch(SQLException se) {}
+            if(rs!=null) try { rs.close(); } catch(SQLException se) {}
+        }
+    }
 
     public static void modelToDB(List<PatientModel> patientModelList){
         Connection conn = null;
         Statement stmt = null;
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "root";
+        String id = "";
         String pw = "";
 
         try{
@@ -110,7 +144,6 @@ public class DataDAO {
             System.out.println("Successfully run!");
 
             stmt = conn.createStatement();
-
 
 
             for (PatientModel patient:patientModelList) {
@@ -143,12 +176,13 @@ public class DataDAO {
         }
         finally{
             try{
-                //�ڿ� ����
                 if(conn != null && !conn.isClosed())
                     conn.close();
             } catch(SQLException e){
                 e.printStackTrace();
             }
         }
+
     }
+
 }
