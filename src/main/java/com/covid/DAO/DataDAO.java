@@ -8,8 +8,8 @@ import java.util.List;
 public class DataDAO {
     public static void createDb() {
         String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "root";
-        String password = "qjelqjel01!";
+        String username = "";
+        String password = "";
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -50,8 +50,8 @@ public class DataDAO {
         Statement stmt = null;
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "root";
-        String pw = "qjelqjel01!";
+        String id = "";
+        String pw = "";
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -94,8 +94,8 @@ public class DataDAO {
 
     public static void getCountRegion(){
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "root";
-        String password = "qjelqjel01!";
+        String username = "";
+        String password = "";
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -155,8 +155,8 @@ public class DataDAO {
         Statement stmt = null;
 
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "root";
-        String pw = "qjelqjel01!";
+        String id = "";
+        String pw = "";
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
