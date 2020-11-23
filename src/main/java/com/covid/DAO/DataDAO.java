@@ -17,7 +17,7 @@ public class DataDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+            String url = "jdbc:mysql://3.34.52.183/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
             conn = DriverManager.getConnection(url,Const.username,Const.password);
 
             stmt = conn.createStatement();
