@@ -177,6 +177,43 @@ public class DataDAO {
         }
     }
 
+    public static void updateData(String id,PatientModel patientModel){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            String regionCountQuery = "update patient set confirmedDate = ?, patientId = ?, region = ?, patientState = ? where id = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,patientModel.getConfirmedDate());
+            pstmt.setString(2,patientModel.getPatientId());
+            pstmt.setString(3,patientModel.getRegion());
+            pstmt.setString(4, String.valueOf(patientModel.getPatientState()));
+            pstmt.setString(5,id);
+
+            pstmt.executeUpdate();
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void deleteData(String id){
         Connection conn = null;
         PreparedStatement pstmt = null;
