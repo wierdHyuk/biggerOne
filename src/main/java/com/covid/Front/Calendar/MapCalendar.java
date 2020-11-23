@@ -80,12 +80,10 @@ class CalendarDataManager { // 7*6배열에 나타낼 달력 값을 구하는 cl
     }
 
     public int getMonth() {
-        System.out.println("month:" + calMonth);
         return calMonth;
     }
 
     public int getYear() {
-        System.out.println("year:" + calYear);
         return calYear;
     }
 }
@@ -294,7 +292,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             calPanel = new JPanel();
             weekDaysName = new JButton[7];
             for (int i = 0; i < CAL_WIDTH; i++) {
-                System.out.print(WEEK_DAY_NAME[i]);
                 weekDaysName[i] = new JButton(WEEK_DAY_NAME[i]);
                 weekDaysName[i].setBorderPainted(false);//??
                 weekDaysName[i].setContentAreaFilled(false);
@@ -392,8 +389,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         }
 
         public void showCal(ArrayList<Map<String, Long>> patientCount){
-            //private void showCal(){
-            //System.out.println(patientCount.get(0).get("1.24") + "허");
+        
             HashMap<String, Long>Jan = new HashMap<>();
             HashMap<String, Long>Feb = new HashMap<>();
             HashMap<String, Long>Mar = new HashMap<>();
@@ -403,9 +399,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             HashMap<String, Long>Jul = new HashMap<>();
             HashMap<String, Long>Aug = new HashMap<>();
             HashMap<String, Long>Sep = new HashMap<>();
-            HashMap<String, Long>Oct = new HashMap<>();
-            HashMap<String, Long>Nov = new HashMap<>();
-            HashMap<String, Long>Dec = new HashMap<>();
+            
             for(int m = 0; m < patientCount.toArray().length; m++) {
                 Iterator<String> keys = patientCount.get(m).keySet().iterator();
                 while (keys.hasNext()) {
@@ -431,17 +425,11 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
                         Aug.putAll(patientCount.get(m));
                     } else if(Integer.parseInt(months) == 9) {
                         Sep.putAll(patientCount.get(m));
-                    } else if(Integer.parseInt(months) == 10) {
-                        Oct.putAll(patientCount.get(m));
-                    } else if(Integer.parseInt(months) == 11) {
-                        Nov.putAll(patientCount.get(m));
-                    } else if(Integer.parseInt(months) == 12) {
-                        Dec.putAll(patientCount.get(m));
-                    }
+                    } 
                 }
 
             }
-            System.out.println(Jan);
+
             for (int i = 0; i < CAL_HEIGHT; i++) {
                 for (int j = 0; j < CAL_WIDTH; j++) {
 
@@ -460,7 +448,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
                     if (calMonth == today.get(Calendar.MONTH) &&
                             calYear == today.get(Calendar.YEAR) &&
                             calDates[i][j] == today.get(Calendar.DAY_OF_MONTH)) {
-                        System.out.println("여기부터" + calYear + calMonth + calDates[i][j]);
                         dateButs[i][j].add(todayMark);
                         dateButs[i][j].setToolTipText("Today");
                         JLabel redMMark = new JLabel("<html><font color=red>*</html>");
@@ -483,57 +470,63 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
                     cal = new GregorianCalendar(calYear, calMonth, calDayOfMon);
                     int month = cal.get(Calendar.MONTH);
                     month += 1;
-                    int numberOfPatient;
-                    String key = Integer.toString(1) + "." + "30";
-
-                    System.out.println(Jan.get(key).intValue());
+                    int numberOfPatient = 0;
+                    String key = String.valueOf(month) + "." + day;
+                    
                     if(month == 1){
-                        numberOfPatient = Jan.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Jan.get(key)!=null) {
+                            numberOfPatient = Jan.get(key).intValue();
+                        }
                     } else if(month == 2) {
-                        numberOfPatient = Feb.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Feb.get(key)!=null) {
+                            numberOfPatient = Feb.get(key).intValue();
+                        }
 
                     } else if(month == 3) {
-                        numberOfPatient = Mar.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Mar.get(key)!=null){
+                            numberOfPatient = Mar.get(key).intValue();
+                        }
+                        
                     } else if(month == 4) {
-                        numberOfPatient = Apr.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Apr.get(key)!=null) {
+                            numberOfPatient = Apr.get(key).intValue();
+                        }
                     } else if(month == 5) {
-                        numberOfPatient = May.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(May.get(key)!=null) {
+                            numberOfPatient = May.get(key).intValue();
+                        }
                     } else if(month == 6) {
-                        numberOfPatient = Jun.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Jun.get(key)!=null) {
+                            numberOfPatient = Jun.get(key).intValue();
+                        }
                     } else if(month == 7) {
-                        numberOfPatient = Jul.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Jul.get(key)!=null) {
+                            numberOfPatient = Jul.get(key).intValue();
+                        }
                     } else if(month == 8) {
-                        numberOfPatient = Aug.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
+                        if(Aug.get(key)!=null) {
+                            numberOfPatient = Aug.get(key).intValue();
+                        }
                     } else if(month == 9) {
-                        numberOfPatient = Sep.get(key).intValue();
-                        System.out.println("아아"+numberOfPatient);
-                    } else {
-                        numberOfPatient = 0;
+                        if(Sep.get(key)!=null) {
+                            numberOfPatient = Sep.get(key).intValue();
+                        }
                     }
-                    System.out.println("아아"+numberOfPatient);
                     month = 0;
-                    if(numberOfPatient >= 200){
+                    if(numberOfPatient >= 120){
                         JLabel Mark = new JLabel("<html><font color=red>●</html>");
                         dateButs[i][j].add(Mark);
-                    } else if(numberOfPatient <= 100 && numberOfPatient >= 50) {
+                    }else if(numberOfPatient>=51 && numberOfPatient<120){
+                        JLabel Mark = new JLabel("<html><font color=orange>●</html>");
+                        dateButs[i][j].add(Mark);
+                    }
+                    else if(numberOfPatient <= 50 && numberOfPatient >= 21) {
                         JLabel Mark = new JLabel("<html><font color=green>●</html>");
                         dateButs[i][j].add(Mark);
-                    } else if(numberOfPatient <= 50) {
+                    } else if(numberOfPatient <= 20) {
                         JLabel Mark = new JLabel("<html><font color=blue>●</html>");
                         dateButs[i][j].add(Mark);
-                    } else{
-                        System.out.println("nothing");
                     }
-                    System.out.println("달" + month);
-
 
                 }
             }
@@ -668,7 +661,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
                             }
                         }
                     } catch (InterruptedException e) {
-                        System.out.println("Thread:Error");
+                        e.printStackTrace();
                     }
                 }
             }
