@@ -110,6 +110,11 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
     JButton lMonBut;
     JButton nMonBut;
 
+    //관리자 모드
+    JPanel adminPanel;
+    JButton adminBut;
+    JLabel adminLabel;
+
 
     JLabel yearLbl = new JLabel("년");
 
@@ -185,6 +190,13 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
         todayBut.addActionListener(lForCalOpButtons);
         todayLab = new JLabel(today.get(Calendar.MONTH)+1+"/"+today.get(Calendar.DAY_OF_MONTH)+"/"+today.get(Calendar.YEAR));
 
+
+        // 관리자
+        adminPanel = new JPanel();
+        adminBut = new JButton("관리자");
+        adminBut.setToolTipText("관리자 모드");
+
+
         //**
         lMonBut = new JButton("◀");
         lMonBut.setToolTipText("Previous Month");
@@ -229,11 +241,28 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
         calOpGC.weighty = 1;
         calOpGC.insets = new Insets(5,5,0,0);
         calOpGC.anchor = GridBagConstraints.WEST;
-        calOpGC.fill = GridBagConstraints.NONE;
+
+        // admin
+        GridBagConstraints adminCalOp = new GridBagConstraints();
+        calOpGC.gridx = 1;
+        calOpGC.gridy = 1;
+        calOpGC.gridwidth = 2;
+        calOpGC.gridheight = 1;
+        calOpGC.weightx = 1;
+        calOpGC.weighty = 1;
+        calOpGC.insets = new Insets(7,7,0,0);
+        calOpGC.anchor = GridBagConstraints.WEST;
+        // 관리자
+        calOpPanel.add(adminBut,adminCalOp);
+
+
+
         calOpPanel.add(todayBut,calOpGC);
         calOpGC.gridwidth = 3;
         calOpGC.gridx = 2;
-        calOpGC.gridy = 1;
+        calOpGC.gridy = 1;calOpGC.fill = GridBagConstraints.NONE;
+
+
         calOpPanel.add(todayLab,calOpGC);
         calOpGC.anchor = GridBagConstraints.CENTER;
         calOpGC.gridwidth = 1;
