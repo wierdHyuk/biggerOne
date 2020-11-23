@@ -13,6 +13,8 @@ import java.util.List;
 
 //    관리자 버튼 눌렀을 시 새로운 창 열기
 public class AdminWindow extends JFrame {
+    int count=0;
+
     public AdminWindow() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("ID : ");
@@ -37,11 +39,18 @@ public class AdminWindow extends JFrame {
                 String pass = "1234";
 
                 if (id.equals(txtID.getText()) && pass.equals(txtPass.getText())) {
-                    JOptionPane.showMessageDialog(null, "you have logged in successfully");
+                    JOptionPane.showMessageDialog(null, "로그인 성공");
                     dispose();// 해당 창 종료
                     new AdminDBWindow(); // 새로운 db 관리자 창 띄우기
                 } else {
-                    JOptionPane.showMessageDialog(null, " you failed to log in ");
+                    ++count;
+
+                    if (count==5){
+                        JOptionPane.showMessageDialog(null, "로그인 5회 시도 강제종료");
+                        System.exit(1);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "로그인 실패");
+                    }
                 }
             }
 
@@ -55,15 +64,18 @@ public class AdminWindow extends JFrame {
 }
 
 class AdminDBWindow extends JFrame {
-    JPanel panWest, panSouth, p1, p2, p3,p4,p5;
-    JTextField txtIdx, txtDate,txtPatientId, txtRegion,txtState;
-    JButton btnInsert, btnDelete, btnSelect;
-
-    JTable table;
+    JPanel panWest, panSouth,p0, p1, p2, p3,p4,p5;
+    JTextField txtFixId,txtIdx, txtDate,txtPatientId, txtRegion,txtState;
+    JButton btnInsert, btnDelete, btnSelect, btnUpdate;
 
 
     AdminDBWindow() {
         panWest = new JPanel(new GridLayout(3, 0));
+
+        p0 = new JPanel(new FlowLayout());
+        p0.add(new JLabel("수정할 Id (추가시 불필요)"));
+        p0.add(txtFixId = new JTextField(12));
+        panWest.add(p0);
 
         p1 = new JPanel(new FlowLayout());
         p1.add(new JLabel("id"));
@@ -95,6 +107,7 @@ class AdminDBWindow extends JFrame {
         panSouth = new JPanel();
         panSouth.add(btnSelect = new JButton("조회"));
         panSouth.add(btnInsert = new JButton("추가"));
+        panSouth.add(btnUpdate = new JButton("수정"));
         panSouth.add(btnDelete = new JButton("삭제"));
 
         add(panSouth, BorderLayout.SOUTH);
@@ -103,6 +116,7 @@ class AdminDBWindow extends JFrame {
         btnSelect.addActionListener(lisner);
         btnInsert.addActionListener(lisner);
         btnDelete.addActionListener(lisner);
+        btnUpdate.addActionListener(lisner);
 
         setBounds(100, 100, 700, 300);
         setVisible(true);
@@ -128,6 +142,8 @@ class AdminDBWindow extends JFrame {
             } else if (obj == btnDelete) {
 //    System.out.println("Delete!");
                 delete();
+            } else if (obj == btnUpdate){
+                update();
             }
         }
     };
@@ -175,6 +191,27 @@ class AdminDBWindow extends JFrame {
         PatientModel patientModel = PatientModel.PatientModelBuilder(id,date,patientId,region,state);
 
         DataDAO.createNewData(patientModel);
+
+    }
+
+    private void update() {
+        String id;
+        String date;
+        String patientId;
+        String region;
+        String state;
+        String fixId;
+
+        fixId = txtFixId.getText();
+        id = txtIdx.getText();
+        date = txtDate.getText();
+        patientId = txtPatientId.getText();
+        region=txtRegion.getText();
+        state = txtState.getText();
+
+        PatientModel patientModel = PatientModel.PatientModelBuilder(id,date,patientId,region,state);
+
+        DataDAO.updateData(fixId,patientModel);
 
     }
 
