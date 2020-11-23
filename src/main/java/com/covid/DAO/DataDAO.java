@@ -100,7 +100,7 @@ public class DataDAO {
 
             conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
 
-            String regionCountQuery = "select * from patient";
+            String regionCountQuery = "select * from patient order by confirmedDate";
 
             pstmt = conn.prepareStatement(regionCountQuery);
 
