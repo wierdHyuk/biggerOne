@@ -1,26 +1,74 @@
 package com.covid.Front.Map;
 
+import com.covid.Model.Const;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class imagePanel extends JPanel {
     Image image = null;
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        ImageIcon map = new ImageIcon( Toolkit.getDefaultToolkit().getImage(getClass().getResource("/map.png")));
+        // 지도
+        ImageIcon map = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/map.png")));
         image = map.getImage();
-
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth();
-        int h = getHeight();
-        Color color1 = new Color(0xF2BE65);
-        Color color2 = Color.white;
-        GradientPaint gp = new GradientPaint(10, 10, color1, 0, h, color1);
-
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
         g.drawImage(image, 0, 0, 840, 550, this);
+
+
+        List<Long> counts = Const.counts;
+
+        int [][] datas = {
+                {185, 270},
+                {160, 317},
+                {160, 370},
+                {279, 413},
+                {364, 409},
+                {399, 359},
+                {283, 307},
+                {260, 250},
+                {353, 171},
+                {368, 229},
+                {417, 316},
+                {471, 272},
+                {459, 350},
+                {530, 344},
+                {556, 282},
+                {408, 202},
+                {500, 186},
+                {522, 216},
+                {566, 229},
+                {646, 326},
+                {690, 296},
+                {603, 270},
+                {623, 208},
+                {593, 169},
+                {532, 145}
+        };
+
+        if (counts != null) {
+            for (int i=0;i<counts.size();i++) {
+                Long count = counts.get(i);
+
+                Color color=Color.GREEN;
+
+                if(count>=3 && count<=5){
+                    color=Color.ORANGE;
+                }else if(count>5&&count<=7){
+                    color=Color.YELLOW;
+                }else if(count>7){
+                    color=Color.red;
+                }
+                g.setColor(color);
+                g.fillOval(datas[i][0],datas[i][1],15,15);
+
+
+            }
+        }
+
     }
 }

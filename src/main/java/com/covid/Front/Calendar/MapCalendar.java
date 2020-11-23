@@ -1,21 +1,18 @@
 package com.covid.Front.Calendar;
 
+import com.covid.DAO.DataDAO;
 import com.covid.Front.Admin.AdminWindow;
 import com.covid.Front.Map.imagePanel;
+import com.covid.Model.Const;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -93,7 +90,6 @@ class CalendarDataManager { // 7*6배열에 나타낼 달력 값을 구하는 cl
     }
 }
 
-
 public class MapCalendar extends CalendarDataManager { // CalendarDataManager의 GUI + 시계
     // 창 구성요소와 배치도
     JFrame mainFrame;
@@ -109,7 +105,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
     //관리자 모드
     JPanel adminPanel;
     JButton adminBut;
-    JLabel adminLabel;
 
 
     JLabel yearLbl = new JLabel("년");
@@ -142,7 +137,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
     JPanel mapPanel;
     JLabel selectedDate;
     imagePanel mapArea;
-    JScrollPane mapAreaSP;
 
 
     JPanel frameBottomPanel;
@@ -338,9 +332,16 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
 
         mapPanel = new JPanel();
         mapPanel.setBorder(BorderFactory.createTitledBorder("Location : SEOUL"));
+        mapPanel.getX();
+        mapPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point p = e.getPoint();
+                System.out.println("X : "+p.getX()+"Y : "+p.getY());
+            }
+        });
+
         mapArea = new imagePanel();
-
-
         mapPanel.setLayout(new BorderLayout());
         mapPanel.add(selectedDate, BorderLayout.NORTH);
         mapPanel.add(mapArea, BorderLayout.CENTER);
@@ -380,10 +381,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         mainFrame.setVisible(true);
 
         focusToday(); //현재 날짜에 focus를 줌 (mainFrame.setVisible(true) 이후에 배치해야함)
-
-        //Thread 작동(시계, bottomMsg 일정시간후 삭제)
-        ThreadConrol threadCnl = new ThreadConrol();
-        threadCnl.start();
     }
 
     private void focusToday() {
@@ -500,6 +497,21 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             selectedDate.setText("<Html><font size=3>" + (calMonth + 1) + "/" + calDayOfMon + "/" + calYear + "&nbsp;(" + dDayString + ")</html>");
 
 
+            // 모든 도시들
+            List<String> cities = Arrays.asList("강서구","양천구","구로구","금천구","관악구","동작구","영등포구","마포구","은평구","서대문구","용산구","중구","서초구","강남구","성동구","종로구","강북구","성북구","동대문구","송파구","강동구","광진구","중량구","노원구","도봉구");
+
+            List<Long> counts = new ArrayList<>();
+
+            for (String city:cities) {
+                String count = DataDAO.getCountRegionAndDate(city,String.valueOf(calMonth+1)+"."+String.valueOf(calDayOfMon));
+                counts.add(Long.valueOf(count));
+            }
+
+            // 전역 변수에 삽입
+            Const.counts = counts;
+
+            // 다시 칠하기
+            mapArea.repaint();
         }
     }
 

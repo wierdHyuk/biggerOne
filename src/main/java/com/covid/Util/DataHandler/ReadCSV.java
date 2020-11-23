@@ -40,6 +40,12 @@ public class ReadCSV {
                 // null 처리
                 if(confirmedDate!=null && !confirmedDate.equals("")) {
                     confirmedDate = confirmedDate.substring(0, confirmedDate.length() - 1); // 마지막 문자열 지우기 (.)
+                    String[] toProcessConfirmedDate = confirmedDate.split("\\.");
+                    int month = Integer.parseInt(toProcessConfirmedDate[0]);
+                    int date = Integer.parseInt(toProcessConfirmedDate[1]);
+
+                    confirmedDate = String.valueOf(month) + "." + String.valueOf(date);
+
                 }
 
                 String patientId = array[2];
