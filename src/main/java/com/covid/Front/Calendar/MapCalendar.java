@@ -133,6 +133,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
 
     ListenForCalOpButtons lForCalOpButtons = new ListenForCalOpButtons();
     ListenForCalCombos lForCalCombos = new ListenForCalCombos();
+    ActionForAdminButton lForAAdminButtons = new ActionForAdminButton();
 //**
 
     JPanel calPanel;
@@ -194,6 +195,7 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
         // 관리자
         adminPanel = new JPanel();
         adminBut = new JButton("관리자");
+        adminBut.addActionListener(lForAAdminButtons);
         adminBut.setToolTipText("관리자 모드");
 
 
@@ -469,6 +471,31 @@ public class MapCalendar extends CalendarDataManager{ // CalendarDataManager의 
 
 
             showCal();
+        }
+    }
+
+//    관리자 버튼 눌렀을 시 새로운 창 열기
+    class AdminWindow extends JFrame{
+        AdminWindow(){
+            setTitle("로그인");
+
+            JPanel adminWindowContainer = new JPanel();
+            setContentPane(adminWindowContainer);
+
+            JLabel newLbal = new JLabel("로그인 ");
+
+            adminWindowContainer.add(newLbal);
+
+            setSize(500,300);
+            setResizable(false);
+            setVisible(true);
+        }
+    }
+
+    // 관리자 버튼 누를시 action
+    private class ActionForAdminButton implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            new AdminWindow();
         }
     }
 
