@@ -1,117 +1,74 @@
 package com.covid.Front.Map;
 
+import com.covid.Model.Const;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class imagePanel extends JPanel {
     Image image = null;
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // 지도
-        ImageIcon map = new ImageIcon( Toolkit.getDefaultToolkit().getImage(getClass().getResource("/map.png")));
+        ImageIcon map = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/map.png")));
         image = map.getImage();
         g.drawImage(image, 0, 0, 840, 550, this);
 
-        //은평구
-        g.setColor(Color.RED);
-        g.fillOval(353,171,15,15);
 
-        //영등포구
-        g.setColor(Color.PINK);
-        g.fillOval(283,307,15,15);
+        List<Long> counts = Const.counts;
 
-        //금천구
-        g.setColor(Color.BLUE);
-        g.fillOval(279,413,15,15);
+        int [][] datas = {
+                {185, 270},
+                {160, 317},
+                {160, 370},
+                {279, 413},
+                {364, 409},
+                {399, 359},
+                {283, 307},
+                {260, 250},
+                {353, 171},
+                {368, 229},
+                {417, 316},
+                {471, 272},
+                {459, 350},
+                {530, 344},
+                {556, 282},
+                {408, 202},
+                {500, 186},
+                {522, 216},
+                {566, 229},
+                {646, 326},
+                {690, 296},
+                {603, 270},
+                {623, 208},
+                {593, 169},
+                {532, 145}
+        };
 
-        //관악구
-        g.setColor(Color.BLUE);
-        g.fillOval(364,409,15,15);
+        if (counts != null) {
+            for (int i=0;i<counts.size();i++) {
+                Long count = counts.get(i);
 
-        //동작구
-        g.setColor(Color.BLUE);
-        g.fillOval(399,359,15,15);
+                Color color=Color.GREEN;
 
-        //서초구
-        g.setColor(Color.BLUE);
-        g.fillOval(459,350,15,15);
-
-        //서대문구
-        g.setColor(Color.BLUE);
-        g.fillOval(368,229,15,15);
-
-        //종로구
-        g.setColor(Color.BLUE);
-        g.fillOval(408,202,15,15);
-
-        //용산
-        g.setColor(Color.BLUE);
-        g.fillOval(417,316,15,15);
-
-        //중구
-        g.setColor(Color.BLUE);
-        g.fillOval(471,272,15,15);
-
-        //강남구
-        g.setColor(Color.BLUE);
-        g.fillOval(530,344,15,15);
-
-        //송파구
-        g.setColor(Color.BLUE);
-        g.fillOval(646,326,15,15);
-
-        //강동구
-        g.setColor(Color.BLUE);
-        g.fillOval(690,296,15,15);
-
-        //노원구
-        g.setColor(Color.BLUE);
-        g.fillOval(593,169,15,15);
-
-        //중량구
-        g.setColor(Color.BLUE);
-        g.fillOval(623,208,15,15);
-
-        //광진구
-        g.setColor(Color.BLUE);
-        g.fillOval(603,270,15,15);
-
-        //동대문구
-        g.setColor(Color.BLUE);
-        g.fillOval(566,229,15,15);
-
-        //도봉구
-        g.setColor(Color.BLUE);
-        g.fillOval(532,145,15,15);
-
-        //강북구
-        g.setColor(Color.BLUE);
-        g.fillOval(500,186,15,15);
-
-        //성북구
-        g.setColor(Color.BLUE);
-        g.fillOval(522,216,15,15);
-
-        //성동구
-        g.setColor(Color.BLUE);
-        g.fillOval(556,282,15,15);
+                if(count>=3 && count<=5){
+                    color=Color.ORANGE;
+                }else if(count>5&&count<=7){
+                    color=Color.YELLOW;
+                }else if(count>7){
+                    color=Color.red;
+                }
+                g.setColor(color);
+                g.fillOval(datas[i][0],datas[i][1],15,15);
 
 
-        //강서구
-        g.setColor(Color.GREEN);
-        g.fillOval(185,270,15,15);
+            }
+        }
 
-        //마포구
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillOval(260,250,15,15);
-
-        //양천구
-        g.setColor(Color.BLUE);
-        g.fillOval(160,317,15,15);
-
-        //구로구
-        g.setColor(Color.BLACK);
-        g.fillOval(160,370,15,15);
     }
 }
