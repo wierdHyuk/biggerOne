@@ -1,5 +1,6 @@
 package com.covid.DAO;
 
+import com.covid.Model.Const;
 import com.covid.Model.PatientModel;
 
 import java.sql.*;
@@ -10,17 +11,14 @@ import java.util.Map;
 
 public class DataDAO {
     public static void createDb() {
-        String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "";
-        String password = "";
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(url,username,password);
+            String url = "jdbc:mysql://127.0.0.1/?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+            conn = DriverManager.getConnection(url,Const.username,Const.password);
 
             stmt = conn.createStatement();
             String existsSql = "DROP DATABASE IF EXISTS `covid19`;";
@@ -34,7 +32,6 @@ public class DataDAO {
             rs = stmt.executeQuery(sql2);
             while(rs.next())
             {
-                System.out.println(rs.getString(1));
             }
 
         } catch (ClassNotFoundException cnfe) {
@@ -52,14 +49,10 @@ public class DataDAO {
         Connection conn = null;
         Statement stmt = null;
 
-        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "";
-        String pw = "";
-
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(url, id, pw);
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
 
             System.out.println("Successfully Connected!");
 
@@ -95,29 +88,188 @@ public class DataDAO {
         }
     }
 
-    public static void getCountRegion(String region){
-        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String username = "root";
-        String password = "";
+    public static List<PatientModel> selectAllFromTable(){
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-        try {
+        List<PatientModel> response= new ArrayList<>();
+
+        try{
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(url,username,password);
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
 
-            String regionCountQuery = "select count(*) from patient where region = ?";
+            String regionCountQuery = "select * from patient";
 
             pstmt = conn.prepareStatement(regionCountQuery);
-
-            pstmt.setString(1,region);
 
             rs = pstmt.executeQuery();
             while(rs.next())
             {
-                System.out.println(rs.getString(1));
+                PatientModel patientModel = PatientModel.PatientModelBuilder(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+                response.add(patientModel);
+            }
+
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return response;
+    }
+
+    public static void createNewData(PatientModel patientModel){
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            System.out.println("Successfully run!");
+
+            stmt = conn.createStatement();
+
+            StringBuilder sb = new StringBuilder();
+
+            String sql = sb.append("insert into patient (id, confirmedDate, patientId, region, patientState) values('")
+                    .append(patientModel.getId())
+                    .append("','")
+                    .append(patientModel.getConfirmedDate())
+                    .append("','")
+                    .append(patientModel.getPatientId())
+                    .append("','")
+                    .append(patientModel.getRegion())
+                    .append("','")
+                    .append(patientModel.getPatientState())
+                    .append("')")
+                    .toString();
+            stmt.execute(sql);
+
+
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void updateData(String id,PatientModel patientModel){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            String regionCountQuery = "update patient set confirmedDate = ?, patientId = ?, region = ?, patientState = ? where id = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,patientModel.getConfirmedDate());
+            pstmt.setString(2,patientModel.getPatientId());
+            pstmt.setString(3,patientModel.getRegion());
+            pstmt.setString(4, String.valueOf(patientModel.getPatientState()));
+            pstmt.setString(5,id);
+
+            pstmt.executeUpdate();
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void deleteData(String id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            String regionCountQuery = "delete from patient where id = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,id);
+
+            pstmt.executeUpdate();
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String getCountRegionAndDate(String region,String date){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String response=null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            String regionCountQuery = "select count(*) from patient where region = ? and confirmedDate = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,region);
+            pstmt.setString(2,date);
+
+            rs = pstmt.executeQuery();
+            while(rs.next())
+            {
+                response= rs.getString(1);
             }
 
         } catch (ClassNotFoundException cnfe) {
@@ -129,20 +281,18 @@ public class DataDAO {
             if(pstmt!=null) try { pstmt.close(); } catch(SQLException se) {}
             if(rs!=null) try { rs.close(); } catch(SQLException se) {}
         }
+
+        return response;
     }
 
     public static void modelToDB(List<PatientModel> patientModelList){
         Connection conn = null;
         Statement stmt = null;
 
-        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "";
-        String pw = "";
-
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(url, id, pw);
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
 
             System.out.println("Successfully run!");
 
@@ -191,17 +341,12 @@ public class DataDAO {
     public static List<Map<String,Long>> dayCount() {
         Connection conn = null;
 
-
-        String url = "jdbc:mysql://127.0.0.1/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
-        String id = "root";
-        String pw = "";
-
         List<Map<String, Long>> response = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(url, id, pw);
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
 
             System.out.println("Extract patient num!\n");
 
@@ -216,12 +361,6 @@ public class DataDAO {
                 data.put(rs.getString(1), rs.getLong(2));
                 response.add(data);
             }
-
-            for (Map<String,Long> data:response
-                 ) {
-                System.out.println(data);
-            }
-
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
