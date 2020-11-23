@@ -3,7 +3,10 @@ package com.covid.DAO;
 import com.covid.Model.PatientModel;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataDAO {
     public static void createDb() {
@@ -182,6 +185,58 @@ public class DataDAO {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public static List<Map<String,Long>> dayCount() {
+        Connection conn = null;
+
+
+        String url = "jdbc:mysql://127.0.0.1/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+        String id = "root";
+        String pw = "";
+
+        List<Map<String, Long>> response = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(url, id, pw);
+
+            System.out.println("Extract patient num!\n");
+
+
+            String sql = "SELECT confirmedDate, count(*) AS cnt FROM `covid19`.`patient` GROUP BY confirmedDate ORDER BY confirmedDate;";
+
+            PreparedStatement pstmt4 = (PreparedStatement) conn.prepareStatement(sql);
+            ResultSet rs = pstmt4.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Long> data = new HashMap<>();
+                data.put(rs.getString(1), rs.getLong(2));
+                response.add(data);
+            }
+
+            for (Map<String,Long> data:response
+                 ) {
+                System.out.println(data);
+            }
+
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null && !conn.isClosed())
+                    conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return response;
+
 
     }
 
