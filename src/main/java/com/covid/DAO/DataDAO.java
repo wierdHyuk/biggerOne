@@ -177,6 +177,39 @@ public class DataDAO {
         }
     }
 
+    public static void deleteData(String id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            String regionCountQuery = "delete from patient where id = ?";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            pstmt.setString(1,id);
+
+            pstmt.executeUpdate();
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static String getCountRegionAndDate(String region,String date){
         Connection conn = null;
         PreparedStatement pstmt = null;
