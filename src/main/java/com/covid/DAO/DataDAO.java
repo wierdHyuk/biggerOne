@@ -130,6 +130,53 @@ public class DataDAO {
         return response;
     }
 
+    public static void createNewData(PatientModel patientModel){
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(Const.url,Const.username,Const.password);
+
+            System.out.println("Successfully run!");
+
+            stmt = conn.createStatement();
+
+            StringBuilder sb = new StringBuilder();
+
+            String sql = sb.append("insert into patient (id, confirmedDate, patientId, region, patientState) values('")
+                    .append(patientModel.getId())
+                    .append("','")
+                    .append(patientModel.getConfirmedDate())
+                    .append("','")
+                    .append(patientModel.getPatientId())
+                    .append("','")
+                    .append(patientModel.getRegion())
+                    .append("','")
+                    .append(patientModel.getPatientState())
+                    .append("')")
+                    .toString();
+            stmt.execute(sql);
+
+
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static String getCountRegionAndDate(String region,String date){
         Connection conn = null;
         PreparedStatement pstmt = null;
