@@ -95,6 +95,51 @@ public class DataDAO {
         }
     }
 
+    public static List<PatientModel> selectAllFromTable(){
+        String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
+        String username = "root";
+        String password = "";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        List<PatientModel> response= new ArrayList<>();
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(url,username,password);
+
+            String regionCountQuery = "select * from patient";
+
+            pstmt = conn.prepareStatement(regionCountQuery);
+
+            rs = pstmt.executeQuery();
+            while(rs.next())
+            {
+                PatientModel patientModel = PatientModel.PatientModelBuilder(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5));
+                response.add(patientModel);
+            }
+
+        }
+
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(conn != null && !conn.isClosed())
+                    conn.close();
+            } catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return response;
+    }
+
     public static void getCountRegion(String region){
         String url = "jdbc:mysql://localhost/covid19?&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC";
         String username = "root";
