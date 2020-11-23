@@ -3,16 +3,11 @@ package com.covid.Front.Calendar;
 import com.covid.Front.Admin.AdminWindow;
 import com.covid.Front.Map.imagePanel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -93,7 +88,6 @@ class CalendarDataManager { // 7*6배열에 나타낼 달력 값을 구하는 cl
     }
 }
 
-
 public class MapCalendar extends CalendarDataManager { // CalendarDataManager의 GUI + 시계
     // 창 구성요소와 배치도
     JFrame mainFrame;
@@ -109,7 +103,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
     //관리자 모드
     JPanel adminPanel;
     JButton adminBut;
-    JLabel adminLabel;
 
 
     JLabel yearLbl = new JLabel("년");
@@ -141,8 +134,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
 
     JPanel mapPanel;
     JLabel selectedDate;
-    imagePanel mapArea;
-    JScrollPane mapAreaSP;
+    imagePanel mapArea = new imagePanel();
 
 
     JPanel frameBottomPanel;
@@ -338,7 +330,14 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
 
         mapPanel = new JPanel();
         mapPanel.setBorder(BorderFactory.createTitledBorder("Location : SEOUL"));
-        mapArea = new imagePanel();
+        mapPanel.getX();
+        mapPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Point p = e.getPoint();
+                System.out.println("X : "+p.getX()+"Y : "+p.getY());
+            }
+        });
 
 
         mapPanel.setLayout(new BorderLayout());
@@ -380,10 +379,6 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         mainFrame.setVisible(true);
 
         focusToday(); //현재 날짜에 focus를 줌 (mainFrame.setVisible(true) 이후에 배치해야함)
-
-        //Thread 작동(시계, bottomMsg 일정시간후 삭제)
-        ThreadConrol threadCnl = new ThreadConrol();
-        threadCnl.start();
     }
 
     private void focusToday() {
