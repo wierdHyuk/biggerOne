@@ -1,7 +1,9 @@
 package com.covid.Front.Calendar;
 
+import com.covid.DAO.DataDAO;
 import com.covid.Front.Admin.AdminWindow;
 import com.covid.Front.Map.imagePanel;
+import com.covid.Model.Const;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -134,7 +136,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
 
     JPanel mapPanel;
     JLabel selectedDate;
-    imagePanel mapArea = new imagePanel();
+    imagePanel mapArea;
 
 
     JPanel frameBottomPanel;
@@ -339,7 +341,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             }
         });
 
-
+        mapArea = new imagePanel();
         mapPanel.setLayout(new BorderLayout());
         mapPanel.add(selectedDate, BorderLayout.NORTH);
         mapPanel.add(mapArea, BorderLayout.CENTER);
@@ -495,6 +497,21 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             selectedDate.setText("<Html><font size=3>" + (calMonth + 1) + "/" + calDayOfMon + "/" + calYear + "&nbsp;(" + dDayString + ")</html>");
 
 
+            // 모든 도시들
+            List<String> cities = Arrays.asList("강서구","양천구","구로구","금천구","관악구","동작구","영등포구","마포구","은평구","서대문구","용산구","중구","서초구","강남구","성동구","종로구","강북구","성북구","동대문구","송파구","강동구","광진구","중량구","노원구","도봉구");
+
+            List<Long> counts = new ArrayList<>();
+
+            for (String city:cities) {
+                String count = DataDAO.getCountRegionAndDate(city,String.valueOf(calMonth+1)+"."+String.valueOf(calDayOfMon));
+                counts.add(Long.valueOf(count));
+            }
+
+            // 전역 변수에 삽입
+            Const.counts = counts;
+
+            // 다시 칠하기
+            mapArea.repaint();
         }
     }
 
