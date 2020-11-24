@@ -1,21 +1,18 @@
 package com.covid.Front.Calendar;
 
+import com.covid.DAO.DataDAO;
 import com.covid.Front.Admin.AdminWindow;
 import com.covid.Front.Map.imagePanel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -164,9 +161,11 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setResizable(false);
         mainFrame.setIconImage(icon.getImage());
-
+        ArrayList<Map<String, Long>> patientCount = (ArrayList<Map<String, Long>>) DataDAO.dayCount();
         //**
         mainFrame.setTitle("서울시 코로나 현황");
+
+
         //**
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//LookAndFeel Windows 스타일 적용
@@ -224,7 +223,7 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         monthCombo.setSelectedItem(curmonth + 1);    //현재 월 선택
         monthCombo.addActionListener(lForCalCombos);
 
-        //** 
+        //**
 
         calOpPanel.setLayout(new GridBagLayout());
         GridBagConstraints calOpGC = new GridBagConstraints();
@@ -325,7 +324,10 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
         }
         calPanel.setLayout(new GridLayout(0, 7, 2, 2));//행은 0으로 가변적, 열의 개수는 3, 격자사이 간격은 2, 2
         calPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        showCal(); // 달력을 표시
+
+        //showCal();
+
+        showCal(patientCount); // 달력을 표시
 
         infoPanel = new JPanel();
         infoPanel.setLayout(new BorderLayout());
@@ -393,7 +395,36 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             dateButs[today.get(Calendar.WEEK_OF_MONTH) - 1][today.get(Calendar.DAY_OF_WEEK) - 1].requestFocusInWindow();
     }
 
-    private void showCal() {
+    private void setCount(ArrayList<Map<String, Long>> patientCount){
+
+    }
+
+
+    private void showCal(List<Map<String, Long>> patientCount){
+        //private void showCal(){
+        //System.out.println(patientCount.get(0).get("1.24") + "허");
+//        int patients[][] = new int[6][7];
+        int patients[][] = new int[13][32];
+
+        for(int i = 0; i < 13; i++){
+            for(int j = 0; j <32; j++){
+                patients[i][j] = 0;
+            }
+        }
+
+        for(int i = 0; i < patientCount.size(); i++){
+            for(Entry<String, Long> elem : patientCount.get(i).entrySet()) {
+                String key = elem.getKey();
+                int value = elem.getValue().intValue();
+                String[] originalKey = key.split("\\.");
+                int month = Integer.parseInt(originalKey[0]);;
+                int day = Integer.parseInt(originalKey[1]);
+                patients[month][day] += value;
+            }
+        }
+
+        System.out.println("확진자 수: "+ patients);
+
 
         for (int i = 0; i < CAL_HEIGHT; i++) {
             for (int j = 0; j < CAL_WIDTH; j++) {
@@ -403,21 +434,55 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
 
                 File f = new File("MemoData/" + calYear + ((calMonth + 1) < 10 ? "0" : "") + (calMonth + 1) + (calDates[i][j] < 10 ? "0" : "") + calDates[i][j] + ".txt");
                 if (f.exists()) {
-                    dateButs[i][j].setText("<html><b><font color=" + fontColor + ">" + calDates[i][j] + "</font></b></html>");
+                    dateButs[i][j].setText("<html><b><font color=black>" + calDates[i][j] + "</font></b></html>");
                 } else
-                    dateButs[i][j].setText("<html><font color=" + fontColor + ">" + calDates[i][j] + "</font></html>");
+                    dateButs[i][j].setText("<html><font color=black>" + calDates[i][j] + "</font></html>");
 
                 JLabel todayMark = new JLabel("<html><font color=green>*</html>");
                 dateButs[i][j].removeAll();
                 if (calMonth == today.get(Calendar.MONTH) &&
                         calYear == today.get(Calendar.YEAR) &&
                         calDates[i][j] == today.get(Calendar.DAY_OF_MONTH)) {
-                    dateButs[i][j].add(todayMark);
+                    System.out.println("여기부터" + calYear + calMonth + calDates[i][j]);
+//                    dateButs[i][j].add(todayMark);
                     dateButs[i][j].setToolTipText("Today");
                 }
 
-                if (calDates[i][j] == 0) dateButs[i][j].setVisible(false);
-                else dateButs[i][j].setVisible(true);
+                cal = new GregorianCalendar(calYear, calMonth, calDayOfMon);
+
+                if(calYear == 2020 && calMonth >= 1 && calMonth <= 9){
+                    if(dateButs[i][j].getText() != null) {
+
+                        String day = dateButs[i][j].getText();
+                        String originalday = "";
+                        if(day.length() > 39){
+                            originalday = day.substring(day.length()-16, day.length()-14);
+                        }else{
+                            originalday = day.substring(day.length()-15, day.length()-14);
+                        }
+                        System.out.println(originalday);
+                        int origin = Integer.parseInt(originalday);
+
+
+                        System.out.println(calMonth+1 + "." + origin + ": " + patients[calMonth+1][origin]);
+
+
+                        if (patients[calMonth+1][origin] >= 20) {
+                            JLabel Mark = new JLabel("<html><font color=red>●</html>");
+                            dateButs[i][j].add(Mark);
+                        } else if (patients[calMonth+1][origin] >= 10) {
+                            JLabel Mark = new JLabel("<html><font color=green>●</html>");
+                            dateButs[i][j].add(Mark);
+                        } else{
+                            JLabel Mark = new JLabel("<html><font color=blue>●</html>");
+                            dateButs[i][j].add(Mark);
+                        }
+                    }
+
+                    if (calDates[i][j] == 0) dateButs[i][j].setVisible(false);
+                    else dateButs[i][j].setVisible(true);
+                }
+
             }
         }
     }
@@ -440,9 +505,9 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
                 monthCombo.setSelectedItem(getMonth() + 1);
                 yearCombo.setSelectedItem(getYear());
             }
-
-
-            showCal();
+            ArrayList<Map<String, Long>> patientCount = (ArrayList<Map<String, Long>>) DataDAO.dayCount();
+            showCal(patientCount);
+            //showCal();
         }
     }
 
@@ -458,8 +523,9 @@ public class MapCalendar extends CalendarDataManager { // CalendarDataManager의
             moveMonth(diffmonth);
             moveMonth(diffyear * 12);
 
-
-            showCal();
+            ArrayList<Map<String, Long>> patientCount = (ArrayList<Map<String, Long>>) DataDAO.dayCount();
+            showCal(patientCount);
+            //showCal();
         }
     }
 
